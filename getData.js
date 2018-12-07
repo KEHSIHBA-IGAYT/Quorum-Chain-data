@@ -1,7 +1,8 @@
-
 var Web3 = require('web3');
+var json2xls = require('json2xls');
+var fs = require('fs');
 
-var provider = "http://137.116.200.211:22000";
+var provider = "http://51.144.99.46:22000";
 var web3;
 
 var txnData = [];
@@ -22,7 +23,7 @@ if (typeof web3 !== 'undefined') {
     //Get Transaction count
     await getTxn();
  
-    console.log(txnData);
+    console.log("Completed Successfully!!!");
 
   } catch (err) {
     console.log(err);
@@ -31,10 +32,13 @@ if (typeof web3 !== 'undefined') {
 })()
 
 async function getTxn() {
-
-  for (var i = 1; i <= count; i++) {
+  var start = 0;
+  for (var i = start; i <= count; i++) {
+    if(i%500 == 0 || i == start){
+      console.log("Writing to file......");
+    }
+    
     var error, result = await web3.eth.getBlockTransactionCount(i);
-    console.log(result);
     if(!error){
         var err, blkData = await web3.eth.getBlock(i);
         if(!err){
@@ -47,11 +51,7 @@ async function getTxn() {
                                    date.getFullYear() + " " + 
                                    ("00" + date.getHours()).slice(-2) + ":" + 
                                    ("00" + date.getMinutes()).slice(-2) + ":" + 
-                                   ("00" + date.getSeconds()).slice(-2);         
-                                   
-                          console.log(i); 
-                          console.log(result); 
-                          console.log(convertedTimeStamp);         
+                                   ("00" + date.getSeconds()).slice(-2);             
 
           var res = {
             "block": i,
@@ -60,8 +60,17 @@ async function getTxn() {
         }
 
          txnData.push(res);
-
         }
     }
+    
+    if((i%500 == 0 && i != 0) || i == count){
+
+      var xls = json2xls(txnData);
+      fs.writeFileSync('data' + i + '.xlsx', xls, 'binary');
+      console.log("written upto " + i);
+      txnData = [];
+
+    }
+
   }
 }

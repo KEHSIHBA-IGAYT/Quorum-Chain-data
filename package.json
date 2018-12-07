@@ -1,14 +1,17 @@
 {
   "name": "epodata",
   "version": "1.0.0",
-  "description": "",
-  "main": "getData.js",
+  "description": "EpoData",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "web3": "^0.17.0-alpha"
+    "bignumber.js": "^8.0.1",
+    "fs": "0.0.1-security",
+    "json2xls": "^0.1.2",
+    "web3": "^0.17.0-beta"
   }
 }
