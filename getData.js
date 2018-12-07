@@ -2,7 +2,7 @@ var Web3 = require('web3');
 var json2xls = require('json2xls');
 var fs = require('fs');
 
-var provider = "http://51.144.99.46:22000";
+var provider = "http://localhost:22000";
 var web3;
 
 var txnData = [];
